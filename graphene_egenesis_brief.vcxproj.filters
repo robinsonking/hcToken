@@ -14,6 +14,7 @@
     <CustomBuild Include="C:\hyperexchange\HyperExchange\Build\CMakeFiles\59646ace9c04b0537c764d57d890ad6a\egenesis_brief.cpp.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
+    <CustomBuild Include="C:\hyperexchange\HyperExchange\libraries\egenesis\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
