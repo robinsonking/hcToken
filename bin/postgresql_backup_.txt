@@ -1,0 +1,62 @@
+
+create user zabbix ;
+create database zabbix owner zabbix;
+alter user zabbix password zabbix;
+grant all on DATABASE zabbix to zabbix;
+
+//备份
+pg_dump -h 164.82.233.54 -U postgres dcrdata > database_dcrdata.bak
+
+//恢复
+psql -h /var/run/postgresql -U postgres -d dcrdata < database_dcrdata.bak
+
+//7z安装
+sudo apt-get install p7zip
+
+解压文件：
+7z x manager.7z -r -o/home/xx
+解释如下：
+x 代表解压缩文件，并且是按原始目录解压（还有个参数 e 也是解压缩文件，但其会将所有文件都解压到根下，而不是自己原有的文件夹下）manager.7z 是压缩文件，这里大家要换成自己的。如果不在当前目录下要带上完整的目录
+-r 表示递归所有的子文件夹
+-o 是指定解压到的目录，这里大家要注意-o后是没有空格的直接接目录
+
+压缩文件：
+7z a -t7z -r manager.7z /home/manager/*
+解释如下：
+a 代表添加文件／文件夹到压缩包
+-t 是指定压缩类型 一般我们定为7z
+-r 表示递归所有的子文件夹，manager.7z 是压缩好后的压缩包名，/home/manager/* 是要压缩的目录，＊是表示该目录下所有的文件。
+
+
+分卷压缩
+tar -czf - proc | split -b 40m -d - proc.tar.gz 
+
+合并
+cat database_dcrdata.tar.gz*  >>database_dcrdata.tar.gz
+
+解压
+tar  -vzxf  database_dcrdata.tar.gz
+
+
+8h16g 200m 配置
+# DB Version: 9.5
+# OS Type: linux
+# DB Type: web
+# Total Memory (RAM): 16 GB
+# CPUs num: 8
+# Connections num: 100
+# Data Storage: ssd
+
+max_connections = 100
+shared_buffers = 4GB
+effective_cache_size = 12GB
+maintenance_work_mem = 1GB
+checkpoint_completion_target = 0.7
+wal_buffers = 16MB
+default_statistics_target = 100
+random_page_cost = 1.1
+effective_io_concurrency = 200
+work_mem = 10485kB
+min_wal_size = 1GB
+max_wal_size = 2GB
+max_worker_processes = 8
